@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Macias | Web Developer</title>
+    <meta name="description" content="Personal portfolio of Daniel Macias based on modern, clean web design.">
+    
+    <!-- Google Fonts: Inter for legible, premium typography & Newsreader for an elegant serif touch -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Light theme (inspired by mxb.dev off-white/warm gray baseline) */
+            --bg: #FAFAF9;
+            --fg: #1C1917;
+            --fg-muted: #57534E;
+            --surface: #FFFFFF;
+            --border: #E7E5E4;
+            
+            /* Accents */
+            --accent: #E11D48; /* A vibrant rose/red accent */
+            --accent-hover: #BE123C;
+            --selection: rgba(225, 29, 72, 0.15);
+            --link-underline: #E11D48;
+            
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-serif: 'Newsreader', serif;
+            
+            --radius-md: 12px;
+            --container-max: 800px;
+            --wrapper-padding: 2rem;
+            
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Auto Dark Mode handled natively via OS/browser preferences */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #121212;
+                --fg: #F5F5F5;
+                --fg-muted: #A3A3A3;
+                --surface: #1E1E1E;
+                --border: #333333;
+                
+                --accent: #FB7185;
+                --accent-hover: #FDA4AF;
+                --selection: rgba(251, 113, 133, 0.25);
+                --link-underline: #FB7185;
+            }
+        }
+
+        /* Essential Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body, h1, h2, h3, p, ul, li, figure, figcaption, dl, dd {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 1.125rem;
+            transition: background-color var(--transition-fast), color var(--transition-fast);
+        }
+
+        ::selection {
+            background: var(--selection);
+            color: var(--fg);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: var(--fg);
+            margin-bottom: 1rem;
+        }
+
+        .serif {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--fg-muted);
+        }
+
+        /* Layout Structure */
+        .wrapper {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: var(--wrapper-padding);
+            width: 100%;
+        }
+
+        /* Header / Nav */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(var(--bg), 0.8);
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--transition-fast), background-color var(--transition-fast);
+        }
+        
+        .site-header.scrolled {
+            border-bottom-color: var(--border);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem var(--wrapper-padding);
+            max-width: var(--container-max);
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--fg-muted);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Link Underlining magic */
+        .text-link {
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-color: var(--link-underline);
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .text-link:hover {
+            color: var(--accent);
+            text-decoration-thickness: 4px;
+            text-decoration-color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 0 4rem;
+            animation: slideUp 0.8s var(--transition-bounce) both;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p.lead {
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            color: var(--fg-muted);
+            max-width: 650px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            /* animation added via JS IntersectionObserver */
+        }
+
+        .section.visible {
+            animation: slideUpFade 0.6s ease-out forwards;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Subtle modern marker highlight under section titles */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: -2%;
+            width: 104%;
+            height: 10px;
+            background: var(--selection);
+            z-index: -1;
+            transform: rotate(-1deg);
+            border-radius: 4px;
+        }
+
+        /* Project Cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        
+        .project-visual {
+            height: 160px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform var(--transition-fast);
+        }
+        
+        .project-visual.v2 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        .project-visual.v3 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+            border-color: var(--accent);
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .project-card:hover {
+                box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+            }
+        }
+
+        .project-card:hover .project-visual {
+            transform: scale(1.02);
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--selection);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-desc {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+
+        /* Writing / Thoughts List */
+        .article-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .article-item {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            transition: var(--transition-fast);
+            text-decoration: none;
+        }
+
+        @media (min-width: 600px) {
+            .article-item {
+                flex-direction: row;
+                align-items: baseline;
+                gap: 2rem;
+            }
+        }
+
+        .article-item:hover {
+            background-color: var(--surface);
+            border-color: var(--border);
+            transform: translateX(4px);
+        }
+
+        .article-date {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--fg-muted);
+            min-width: 100px;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            transition: color var(--transition-fast);
+        }
+
+        .article-item:hover .article-content h3 {
+            color: var(--accent);
+        }
+
+        .article-content p {
+            font-size: 1rem;
+            margin: 0;
+            color: var(--fg-muted);
+        }
+
+        /* Footer */
+        .site-footer {
+            margin-top: 2rem;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--fg-muted);
+            font-size: 0.95rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            font-weight: 500;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" id="header">
+        <nav class="nav-inner">
+            <a href="#" class="logo">
+                <span class="logo-dot"></span>
+                Daniel Macias
+            </a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#work">Work</a>
+                <a href="#writing">Writing</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="wrapper">
+        <!-- Hero Section -->
+        <section class="hero delay-1" id="about">
+            <h1>Hi, I'm Daniel. <br><span class="serif">I build things for the web.</span></h1>
+            <p class="lead">
+                I'm a software developer focused on creating accessible, inclusive, and blazingly fast digital experiences. I specialize in modern web architectures and robust backend services. Let's build <a href="#work" class="text-link">something amazing</a>.
+            </p>
+        </section>
+
+        <!-- Selected Work -->
+        <section class="section" id="work">
+            <div class="section-header">
+                <h2 class="section-title">Selected Work</h2>
+                <a href="#" class="text-link">View all projects &rarr;</a>
+            </div>
+            
+            <div class="project-grid">
+                <!-- Project 1 -->
+                <a href="#" class="project-card">
+                    <div class="project-visual v1">Diagram Gen</div>
+                    <div class="project-meta">
+                        <span class="project-tag">TypeScript</span>
+                        <span class="project-tag">React</span>
+                    </div>
+                    <h3 class="project-title">Diagram Generator</h3>
+                    <p class="project-desc">A visual tool for creating complex system architecture diagrams utilizing modern UI frameworks and scalable backend services.</p>
+                </a>
+                
+                <!-- Project 2 -->
+                <a href="#" class="project-card">
+                    <div class="project-visual v2">Portfolio UI</div>
+                    <div class="project-meta">
+                        <span class="project-tag">HTML/CSS</span>
+                        <span class="project-tag">Design</span>
+                    </div>
+                    <h3 class="project-title">Minimalist Theme</h3>
+                    <p class="project-desc">A highly performant, accessible personal portfolio layout inspired by modern indie-web aesthetics and state-of-the-art CSS.</p>
+                </a>
+
+                <!-- Project 3 -->
+                <a href="#" class="project-card">
+                    <div class="project-visual v3">Cloud Deployment</div>
+                    <div class="project-meta">
+                        <span class="project-tag">AWS</span>
+                        <span class="project-tag">CI/CD</span>
+                    </div>
+                    <h3 class="project-title">Infrastructure Pipeline</h3>
+                    <p class="project-desc">Containerized backend applications securely deployed tracking automated GitHub Actions pipelines with Terraform.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Writing / Journal -->
+        <section class="section" id="writing">
+            <div class="section-header">
+                <h2 class="section-title">Recent Thoughts</h2>
+                <a href="#" class="text-link">Read full journal &rarr;</a>
+            </div>
+
+            <div class="article-list">
+                <a href="#" class="article-item">
+                    <time class="article-date">Apr 04, 2026</time>
+                    <div class="article-content">
+                        <h3>Deploying Projects with GitHub Actions to AWS</h3>
+                        <p>A step-by-step CI/CD pipeline guide for building, testing, and deploying containerized backend and frontend web applications securely.</p>
+                    </div>
+                </a>
+
+                <a href="#" class="article-item">
+                    <time class="article-date">Mar 28, 2026</time>
+                    <div class="article-content">
+                        <h3>Resolving Lombok Dependency Issues in Java</h3>
+                        <p>How to configure your pom.xml correctly, verify IDE plugins, and ensure your development environment cleanly processes data class annotations.</p>
+                    </div>
+                </a>
+
+                <a href="#" class="article-item">
+                    <time class="article-date">Mar 18, 2026</time>
+                    <div class="article-content">
+                        <h3>TypeScript Strict Mode Types & Interfaces</h3>
+                        <p>Solving common "Property does not exist on type" errors when managing complex object relationships in modern state management architecture.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="social-links">
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Twitter</a>
+                <a href="#">Email</a>
+            </div>
+            <p>&copy; 2026 Daniel Macias. Built with semantic HTML & minimal CSS.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll border effect setup
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for scroll reveal animations mapping beautifully
+        const observeElements = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Reveal only once
+                }
+            });
+        }, { threshold: 0.05 });
+
+        observeElements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
