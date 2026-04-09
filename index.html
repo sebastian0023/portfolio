@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Macias | Software Developer</title>
+    <meta name="description" content="Personal portfolio of Daniel Sebastian Macias Macias — CS student & software developer.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #FAFAF9;
+            --fg: #0a0a0a;
+            --fg-muted: #555555;
+            --surface: #FFFFFF;
+            --border: #E5E5E5;
+            --selection: rgba(0, 0, 0, 0.07);
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-serif: 'Newsreader', serif;
+            --radius-md: 12px;
+            --container-max: 800px;
+            --wrapper-padding: 2rem;
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0a0a0a;
+                --fg: #F0F0F0;
+                --fg-muted: #888888;
+                --surface: #111111;
+                --border: #222222;
+                --selection: rgba(255, 255, 255, 0.07);
+            }
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body, h1, h2, h3, p, ul, li, figure, figcaption, dl, dd {
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 1.125rem;
+            transition: background-color var(--transition-fast), color var(--transition-fast);
+        }
+
+        ::selection { background: var(--selection); color: var(--fg); }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: var(--fg);
+            margin-bottom: 1rem;
+        }
+
+        .serif {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--fg-muted);
+        }
+
+        .wrapper {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: var(--wrapper-padding);
+            width: 100%;
+        }
+
+        /* Header */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(250, 250, 249, 0.85);
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--transition-fast);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .site-header { background-color: rgba(10, 10, 10, 0.85); }
+        }
+
+        .site-header.scrolled { border-bottom-color: var(--border); }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem var(--wrapper-padding);
+            max-width: var(--container-max);
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.03em;
+        }
+
+        .nav-links { display: flex; gap: 1.5rem; }
+
+        .nav-links a {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--fg-muted);
+            transition: color var(--transition-fast);
+        }
+
+        .nav-links a:hover { color: var(--fg); }
+
+        .text-link {
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-color: var(--fg-muted);
+            text-decoration-thickness: 1px;
+            text-underline-offset: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .text-link:hover {
+            text-decoration-color: var(--fg);
+            text-decoration-thickness: 2px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 6rem 0 4rem;
+            animation: slideUp 0.8s var(--transition-bounce) both;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p.lead {
+            font-size: clamp(1.125rem, 3vw, 1.35rem);
+            color: var(--fg-muted);
+            max-width: 650px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .section.visible {
+            animation: slideUpFade 0.6s ease-out forwards;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: -2%;
+            width: 104%;
+            height: 10px;
+            background: var(--selection);
+            z-index: -1;
+            transform: rotate(-1deg);
+            border-radius: 4px;
+        }
+
+        /* Experience */
+        .experience-item {
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            margin-bottom: 1rem;
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .experience-period {
+            font-size: 0.875rem;
+            color: var(--fg-muted);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .experience-org {
+            font-size: 0.95rem;
+            color: var(--fg-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .experience-item p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Project Cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-fast);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .project-visual {
+            height: 160px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: transform var(--transition-fast);
+        }
+
+        /* Monochrome visuals */
+        .project-visual.v1 {
+            background: var(--fg);
+            color: var(--bg);
+        }
+
+        .project-visual.v2 {
+            background: var(--fg-muted);
+            color: var(--bg);
+        }
+
+        .project-visual.v3 {
+            border: 2px solid var(--border);
+            background: var(--surface);
+            color: var(--fg-muted);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+            border-color: var(--fg-muted);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .project-card:hover { box-shadow: 0 12px 24px rgba(0,0,0,0.4); }
+        }
+
+        .project-card:hover .project-visual { transform: scale(1.02); }
+
+        .project-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--fg-muted);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        .project-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
+
+        .project-desc {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+
+        .project-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--fg-muted);
+            transition: color var(--transition-fast);
+        }
+
+        .project-card:hover .project-cta { color: var(--fg); }
+
+        /* Skills */
+        .skills-table {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-row {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            align-items: baseline;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .skill-row:first-child { border-top: 1px solid var(--border); }
+
+        .skill-category {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--fg-muted);
+            white-space: nowrap;
+        }
+
+        .skill-values {
+            font-size: 0.95rem;
+            color: var(--fg);
+            line-height: 1.8;
+        }
+
+        .skill-values span {
+            display: inline-block;
+            margin-right: 0.2rem;
+            color: var(--fg-muted);
+        }
+
+        /* Footer */
+        .site-footer {
+            margin-top: 2rem;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--fg-muted);
+            font-size: 0.95rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            font-weight: 500;
+            transition: color var(--transition-fast);
+        }
+
+        .social-links a:hover { color: var(--fg); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: translateY(24px) scale(0.97);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--fg-muted);
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            color: var(--fg);
+            border-color: var(--fg-muted);
+        }
+
+        .modal-visual {
+            height: 180px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-visual.v1 { background: var(--fg); color: var(--bg); }
+        .modal-visual.v2 { background: var(--fg-muted); color: var(--bg); }
+        .modal-visual.v3 { border: 2px solid var(--border); background: var(--surface); color: var(--fg-muted); }
+
+        .modal-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .modal h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal p { font-size: 1rem; }
+
+        .modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            background: var(--fg);
+            color: var(--bg);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            transition: opacity var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .modal-link:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" id="header">
+        <nav class="nav-inner">
+            <a href="#" class="logo">Daniel Macias</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#work">Projects</a>
+                <a href="#skills">Skills</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="wrapper">
+
+        <!-- Hero -->
+        <section class="hero delay-1" id="about">
+            <h1>Hi, I'm Daniel. <br><span class="serif">I build things for the web.</span></h1>
+            <p class="lead">
+                I'm a Computer Science student at ITESO interested in backend systems, cloud architecture,
+                and databases. I enjoy building things that are well-structured and reliable —
+                from data pipelines to scalable cloud deployments. Let's build
+                <a href="#work" class="text-link">something great</a>.
+            </p>
+        </section>
+
+        <!-- Experience -->
+        <section class="section" id="experience">
+            <div class="section-header">
+                <h2 class="section-title">Experience</h2>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <h3 class="experience-title">Software Developer Intern — Scholarship Program</h3>
+                    <span class="experience-period">Current</span>
+                </div>
+                <p class="experience-org">Instituto Tecnológico de Estudios Superiores de Occidente (ITESO)</p>
+                <p>
+                    Building a full application on an interdisciplinary team using Angular,
+                    collaborating with technical leads to design component architecture and meet
+                    functional requirements for a non-institutional internal tool.
+                </p>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <h3 class="experience-title">B.Sc. in Computer Science</h3>
+                    <span class="experience-period">Expected 2027</span>
+                </div>
+                <p class="experience-org">Instituto Tecnológico de Estudios Superiores de Occidente (ITESO)</p>
+                <p>Coursework covering software engineering, cloud computing, distributed databases, algorithms, and systems programming.</p>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section class="section" id="work">
+            <div class="section-header">
+                <h2 class="section-title">Projects</h2>
+            </div>
+
+            <div class="project-grid">
+
+                <div class="project-card" onclick="openModal('modal-cloud')">
+                    <div class="project-visual v1">Cloud Architecture</div>
+                    <div class="project-meta">
+                        <span class="project-tag">AWS</span>
+                        <span class="project-tag">OCI</span>
+                        <span class="project-tag">Cloud</span>
+                    </div>
+                    <h3 class="project-title">Secure Three-Tier Architecture</h3>
+                    <p class="project-desc">Designed and deployed a secure three-tier cloud app with an isolated database layer, load balancer, bastion host, and auto-scaling.</p>
+                    <span class="project-cta">View details →</span>
+                </div>
+
+                <div class="project-card" onclick="openModal('modal-nosql')">
+                    <div class="project-visual v2">NoSQL Platform</div>
+                    <div class="project-meta">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Cassandra</span>
+                        <span class="project-tag">MongoDB</span>
+                    </div>
+                    <h3 class="project-title">Educational Data Platform</h3>
+                    <p class="project-desc">Integrated data models across Cassandra, MongoDB, and Dgraph with Docker-deployed environments and Python ingestion pipelines.</p>
+                    <span class="project-cta">View details →</span>
+                </div>
+
+                <div class="project-card" onclick="openModal('modal-tournament')">
+                    <div class="project-visual v3">Tournament App</div>
+                    <div class="project-meta">
+                        <span class="project-tag">Node.js</span>
+                        <span class="project-tag">Express</span>
+                        <span class="project-tag">MongoDB</span>
+                    </div>
+                    <h3 class="project-title">Tournament Administrator</h3>
+                    <p class="project-desc">Full-stack CRUD web app with authentication, MongoDB backend, and a responsive interface.</p>
+                    <span class="project-cta">View details →</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section class="section" id="skills">
+            <div class="section-header">
+                <h2 class="section-title">Skills</h2>
+            </div>
+
+            <div class="skills-table">
+                <div class="skill-row">
+                    <span class="skill-category">Languages</span>
+                    <span class="skill-values">Java · Python · JavaScript · SQL · C</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-category">Backend</span>
+                    <span class="skill-values">Node.js · Express · Angular · Next.js</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-category">Databases</span>
+                    <span class="skill-values">Oracle DB · Cassandra · MongoDB · Dgraph</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-category">Cloud</span>
+                    <span class="skill-values">AWS · Oracle Cloud Infrastructure (OCI)</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-category">Tools</span>
+                    <span class="skill-values">Git · Linux · Docker · Jupyter · KNIME</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-category">Spoken</span>
+                    <span class="skill-values">Spanish (native) · English (B2)</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="social-links">
+                <a href="https://github.com/sebastian0023" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://linkedin.com/in/daniel-sebastian-macias-macias-68217a354" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="mailto:ds00macias@gmail.com">Email</a>
+            </div>
+            <p>&copy; 2026 Daniel Sebastian Macias Macias.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+
+    <div class="modal-overlay" id="modal-cloud" role="dialog" aria-modal="true" aria-labelledby="modal-cloud-title">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('modal-cloud')" aria-label="Close">✕</button>
+            <div class="modal-visual v1">Cloud Architecture</div>
+            <div class="modal-meta">
+                <span class="project-tag">AWS</span>
+                <span class="project-tag">OCI</span>
+                <span class="project-tag">Elastic Beanstalk</span>
+                <span class="project-tag">Auto Scaling</span>
+            </div>
+            <h3 id="modal-cloud-title">Cloud Capstone – Secure Three-Tier Architecture</h3>
+            <p>
+                Designed and deployed a secure three-tier cloud application architecture with a fully isolated
+                database layer. Restricted network access so external traffic could only reach the application
+                through a load balancer, and controlled administrative access to the private network via a bastion host.
+            </p>
+            <p>
+                Configured the application layer to scale horizontally using AWS Elastic Beanstalk with Auto Scaling
+                Groups, improving availability, fault tolerance, and resource utilization across both AWS and Oracle
+                Cloud Infrastructure environments.
+            </p>
+            <a class="modal-link" href="https://github.com/sebastian0023" target="_blank" rel="noopener">
+                View on GitHub →
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-nosql" role="dialog" aria-modal="true" aria-labelledby="modal-nosql-title">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('modal-nosql')" aria-label="Close">✕</button>
+            <div class="modal-visual v2">NoSQL Platform</div>
+            <div class="modal-meta">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">Cassandra</span>
+                <span class="project-tag">MongoDB</span>
+                <span class="project-tag">Dgraph</span>
+                <span class="project-tag">Docker</span>
+            </div>
+            <h3 id="modal-nosql-title">Educational Platform – Data Management with NoSQL</h3>
+            <p>
+                Developed and integrated data models using Cassandra, MongoDB, and Dgraph, deploying each
+                database with Docker for consistent, reproducible environments.
+            </p>
+            <p>
+                Built Python-based data ingestion pipelines extracting data from CSV files and loading it
+                into Cassandra tables using prepared statements and session-based execution to improve data integrity.
+                Evaluated performance and scalability trade-offs across distributed database systems.
+            </p>
+            <a class="modal-link" href="https://github.com/sebastian0023" target="_blank" rel="noopener">
+                View on GitHub →
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-tournament" role="dialog" aria-modal="true" aria-labelledby="modal-tournament-title">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('modal-tournament')" aria-label="Close">✕</button>
+            <div class="modal-visual v3">Tournament App</div>
+            <div class="modal-meta">
+                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">Node.js</span>
+                <span class="project-tag">Express</span>
+                <span class="project-tag">MongoDB</span>
+            </div>
+            <h3 id="modal-tournament-title">Tournament Administrator Web Application</h3>
+            <p>
+                Built a full-stack CRUD web application with user authentication and session management.
+                User data is stored securely in a MongoDB cluster, with a RESTful API layer built on
+                Node.js and Express.
+            </p>
+            <p>
+                Focused on reliable database operations and clean interaction between backend and frontend
+                layers, with a responsive interface delivered via Bootstrap.
+            </p>
+            <a class="modal-link" href="https://github.com/sebastian0023" target="_blank" rel="noopener">
+                View on GitHub →
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05 });
+
+        document.querySelectorAll('.section').forEach(el => observer.observe(el));
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) closeModal(overlay.id);
+            });
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.open').forEach(o => closeModal(o.id));
+            }
+        });
+    </script>
+</body>
+</html>
